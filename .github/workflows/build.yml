@@ -67,8 +67,9 @@ jobs:
       - name: Prepare static assets to deploy
         run: |
           mkdir -p dist
-          cp result/intro.html dist/index.html
-          cp -R result/assets dist
+          #cp result/intro.html dist/index.html
+          #cp -R result/assets dist
+          cp -R result/* dist
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
