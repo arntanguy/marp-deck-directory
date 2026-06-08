@@ -32,8 +32,7 @@ _footer: ""
 
 # Retrospective and evolution of LIRMM/JRL control software and build systems
 
-## Arnaud Tanguy - Research Engineer 
-## LIRMM - University of Montpellier
+## Arnaud Tanguy - Research Engineer - LIRMM
 
 **LIRMM**: Laboratoire d'informatique et de robotique de l'université de Montpellier
 
@@ -43,12 +42,13 @@ _footer: ""
 <!-- header: Who am I? -->
 
 # Who am I?
-## Arnaud Tanguy
+## [Arnaud Tanguy](https://arntanguy.fr/)
 
 - Research engineer since 2018 with focus on humanoid robotics and background in computer vision
-- Empower researchers to succeed in their projects
-- Make science reprocucible
-- Any problem should only be hard to solve once
+- I care about:
+  - Empowering researchers to succeed in their projects
+  - Making science reprocucible
+> Any problem should only be hard to solve once
 
 ---
 
@@ -56,7 +56,7 @@ _footer: ""
 
 - **2011-2014**: Software Engineer Degree with major in computer vision (*Polytech'Nice-Sophia-Antipolis*)
   - 1 year in Trinity College Dublin: master's in interactive entertainment technology
-  - Project with *Andrew Comport*: visualizing a dense SLAM map with augmented reality headset
+  - Project with *Andrew Comport*: visualizing a dense visual SLAM map with augmented reality headset
   - 6 months internship at TUM Munich in Daniel Cremer's team
     - Siamese Neural Network for loop closure detection of Visual SLAM
 
@@ -77,9 +77,9 @@ _footer: ""
 
 - **DARPA Robotics Challenge** - *Team AIST-NEDO* - *2015*
   - International challenge on disaster scenario response
-- **COMANOID**: *2015-2019*
+- [**COMANOID**](https://cordis.europa.eu/project/id/645097): *2015-2019*
   - Multi-Contact Collaborative Humanoids in Aircraft Manufacturing
-- **ANA Avatar XPrize** - *Team Janus* - *2023*
+- [**ANA Avatar XPrize**](https://www.xprize.org/competitions/avatar) - *Team Janus* - *2023*
   - Humanoid avatar
 - **Locomanipulation of large industrial objects** - *2020-2023*
 - **Rolkneematics** - *2024-now* - Robotics Learning of Knee Implants Real-Time Imagery
@@ -127,7 +127,7 @@ _footer: ""
 
 ---
 
-## Related software development
+### Related software development
 
 - [`SpaceVecAlg`](https://github.com/jrl-umi3218/SpaceVecAlg) implementation of Roy Featherstone's spatial vector algebra
 - [`RBDyn`](https://github.com/jrl-umi3218/RBDyn) rigid body dynamics algorithms
@@ -140,7 +140,7 @@ Implemented in `C++`, with `Python bindings`
 
 ---
 
-## But no formalized ecosystem 
+### But no formalized ecosystem 
 
 - Projects / demos / use-cases multiply
 - No formalized methodology -> everyone implements ad-hoc python code
@@ -152,7 +152,7 @@ Implemented in `C++`, with `Python bindings`
 
 <!-- header: DARPA Robotics Challenge -->
 
-## DARPA Robotics Challenge
+## DARPA Robotics Challenge - 2013-2015
 
 Challenge following Fukushima nuclear reactor meltdown:
 - First virtual round: June 2013 > AIST
@@ -165,10 +165,10 @@ Challenge following Fukushima nuclear reactor meltdown:
 
 ## DARPA Robotics Challenge
 
-- **HRG** has `hrpsys` and `hmc`
+- **HRG** has `hrpsys` and `hmc2`
   - Very good at walking, manipulation is difficult
   - Strong coupling with `choreonoid` and `openrtm-aist` (ros-like middleware)
-  - Graph based, and hard to manage
+  - Graph based, and hard to manage and understand
 - **LIRMM/JRL**
   - Very good real-time multi-contact control algorithms (e.g `Tasks`)
   - No unified framework yet
@@ -188,9 +188,12 @@ We (LIRMM/JRL) need a real-time control software with the following constraints:
 
 ---
 
-## Finalist, finish 10/23 
+## Finalist
 
-TODO: image
+- Finish 10/23
+- 4/6 tasks completed
+
+![](./assets/hrp2_drc.jpg)
 
 ---
 
@@ -1112,7 +1115,7 @@ jobs:
   - direct dependencies: `eigen-qld`, `sch-core`, `sva`, `rbdyn`, `tasks`, `mesh_sampling`, `ndcurves`, `mc_rtc_data`
   - a few downstream projects: `mc_rtc_ros`, `mc-rtc-magnum`, robot modules, robot interfaces
 
-- Build mananged by a `build_and_install.sh` script
+- Build managed by a `build_and_install.sh` script
   - Sets up system dependencies (ubuntu only)
   - Clones builds and installs projects in the right order (manually defined)
 
