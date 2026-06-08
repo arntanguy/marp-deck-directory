@@ -574,11 +574,11 @@ To build a cmake project in CI:
 ### Continous integration - debian/ubuntu packaging
 
 To package a cmake project in CI:
-- Define `debian` package rules
+- Define `debian` package rules (or use `cpack`)
   - `debian/control`: define packages and their required dependencies
   - `debian/rules`: how to build the package
-  - Set-up additional package repositories, e.g `ros`, ours
-  - Then call debian packaging commands
+- Set-up additional package repositories, e.g `ros`, ours
+- Then call debian packaging commands
 - Publish the package on a public package repository
   - We use [Cloudsmith](https://cloudsmith.com/): free for opensource
 
@@ -590,11 +590,11 @@ To package a cmake project in CI:
 Same as `jrl-cmakemodules`, logic is factorized in [jrl-umi3218/github-actions](https://github.com/jrl-umi3218/github-actions):
 - Github provides:
   - an ecosystem of existing actions that can be directly used
-  - an API to write you own workflow actions
+  - an API to write your own workflow actions
     - In `nodejs`
     - Or define custom reusable workflows in `yaml`
 - [jrl-umi3218/github-actions](https://github.com/jrl-umi3218/github-actions) contains workflows to:
-  - Install dependencies for untuntu (apt), macos (brew), windows (vcpkg), from source, etc
+  - Install dependencies for ubuntu (apt), macos (brew), windows (vcpkg), from source, etc
   - Build and test a cmake project, build and publish debian packages, etc
 
 ---
@@ -1162,7 +1162,7 @@ Core idea:
 
 ---
 
-###`mc-rtc-superbuild` - example - `BaseLineWalking.cmake`
+### `mc-rtc-superbuild` - example - `BaseLineWalking.cmake`
 
 ```cmake
 include(${CMAKE_CURRENT_LIST_DIR}/../control/CentroidalControlCollection.cmake) # ...
@@ -1225,7 +1225,7 @@ AddProject(
 
 ---
 
-### Devcontainers
+### `mc-rtc-superbuild` - devcontainers
 
 [jrl-umi3218/github-actions](https://github.com/jrl-umi3218/github-actions) defines a generic workflow to build 3 types of devcontainers, published on `ghcr.io` (e.g [ghcr.io/mc-rtc/mc-rtc-superbuild](https://ghcr.io/mc-rtc/mc-rtc-superbuild))
 - `devcontainer`
@@ -1339,7 +1339,7 @@ Multiple ways of using an `overlay`, a popular one is nix flakes:
   - `inputs`: `nixpkgs`, custom overlays, ...
   - `outputs`: packages, development shells, ...
 - `flake.lock` locks inputs to a specific version
-  - If your flake builds with these inputs, it will always do*
+  - If your flake builds with these inputs once, it always will*
     - **as long as all inputs remain available*
 
 ---
@@ -1360,14 +1360,15 @@ Multiple ways of using an `overlay`, a popular one is nix flakes:
 
 ### Example use: [PolytopeController](https://github.com/Hugo-L3174/polytopeController)
 
-Hugo Lefevre's work on dynamic balance.
+Hugo Lefevre's thesis work on dynamic whole-body balance.
 
 This project is a work-in-progress that depends on many other changes:
-- A custom version of `tvm`
-- A branch of `mc_rtc` with large-scale changes
-- A branch of `state-observation` to adapt to `mc_rtc`
-- A branch of `mc_dynamic_polytopes` 
-- A branch of `mc_force_shoe_plugin`
+- A custom version of `tvm` solver
+- Branches of:
+  - `mc_rtc` with large-scale changes (contact formulation, etc)
+  - `state-observation` to adapt to `mc_rtc`
+  - `mc_dynamic_polytopes` 
+  - `mc_force_shoe_plugin`
 
 ---
 
