@@ -36,6 +36,8 @@ _footer: ""
 
 **LIRMM**: Laboratoire d'informatique et de robotique de l'université de Montpellier
 
+![height:200px](./assets/qrcode.png)
+
 ---
 
 <!-- _transition: none -->
@@ -92,7 +94,7 @@ _footer: ""
 - Presentation of the software stack used across most projects
   - `mc_rtc` and its dependencies
 - Evolution of build systems
-  - `cmake` `jrl-cmakemodules` `cmake + shell` `mc-rtc-superbuild` `nix`
+  - `cmake + jrl-cmakemodules` `shell scripts` `mc-rtc-superbuild` `nix`
 - Towards reproducibility of software and demos
   - `devcontainers`, `nix`, `ci`
 - Perspectives: how can we do more together?
@@ -113,7 +115,7 @@ _footer: ""
 - Shared robots:
   - HRP-4 in LIRMM
   - HRP robots family with HRG group (`HRP-4J`, `HRP4-CR`, `HRP-2Kai`, `HRP-5P`)
-  - More recently Kawasaki's `RHPS1`
+  - More recently Kawasaki's `RHPS1`, `Unitree G1/H1`
 
 ---
 
@@ -180,7 +182,7 @@ Challenge following Fukushima nuclear reactor meltdown:
 We (LIRMM/JRL) need a real-time control software with the following constraints:
 - Control must be computed at `1000Hz`
 - Can be run on the robot -> `openrtm component`
-- Multi-contact planning and qp control -> `SpaceVecAlg`/`RBDyn`/`Tasks`
+- Multi-contact planning and QP control -> `SpaceVecAlg`/`RBDyn`/`Tasks`
 - Can run multiple control scenarios (ladder climbing, driving, etc)
 - Finite State Machine
 
@@ -190,8 +192,7 @@ We (LIRMM/JRL) need a real-time control software with the following constraints:
 
 ## Finalist
 
-- Finish 10/23
-- 4/6 tasks completed
+- Finish 10/23 with 5/8 tasks completed
 
 ![](./assets/hrp2_drc.jpg)
 
@@ -226,16 +227,16 @@ We (LIRMM/JRL) need a real-time control software with the following constraints:
 ---
 
 <!-- header: Control framework: mc_rtc - Extensibility -->
-## We love extensibility
+## Overview 
 
-- Designed around plugins:
+- Flexible - designed around plugins:
   - Controllers
   - Robots
   - FSM States
   - Plugins
-
-Easily extensible:
-- Robot and simulator interfaces
+- Good integration with QP tasks
+- Simple well integrated tools: YAML Configuration, Logging, GUI, etc
+- Easy to integrate new robots
 
 ---
 
@@ -255,6 +256,8 @@ logger().addLogEntry("entry_name", [this]() { /* compute, say x; */ return x; })
 ---
 
 ## We love [Logging](https://jrl.cnrs.fr/mc_rtc/tutorials/usage/logging.html)
+
+Use a controller, plugin, task, fsm state, get logging for free.
 
 ![height:450px](./assets/log_stair_climbing.png)
 
@@ -284,6 +287,9 @@ gui().addElement(
 ---
 
 ## We love [GUI](https://jrl.cnrs.fr/mc_rtc/tutorials/usage/gui.html)
+
+- Use a controller, plugin, task, fsm state, get `GUI` for free.
+- Clients integrated in `rviz`, `unity`, `blender`, and standalone `mc-rtc-magnum` 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/t7_CbzjKDQg?si=hlVMWRDDObxPDK4m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -324,6 +330,18 @@ struct ConfigurationLoader<MyType>
 
 ---
 
+![bg right](./assets/json_doc.png)
+## We love [JSON Schemas](https://jrl.cnrs.fr/mc_rtc/tutorials/usage/schema.html)
+
+- Describe what the configuration should be
+- Automatic generation of: 
+  - [JSON Schema documentation](https://jrl.cnrs.fr/mc_rtc/json.html)
+  - GUI elements
+  - `yaml lsp`
+- C++ (`<26`) lacks reflexivity, implementation is difficult
+
+---
+
 
 
 <!-- header: Control framework: mc_rtc - Robot Modules -->
@@ -331,9 +349,7 @@ struct ConfigurationLoader<MyType>
 <!-- TODO make background transparent -->
 <!-- ![bg](./assets/robot_family_bg.png) -->
 
-## We love [robots](https://jrl.cnrs.fr/mc_rtc/tutorials/advanced/new-robot.html)
-
-### Robot module
+## We love [robot modules](https://jrl.cnrs.fr/mc_rtc/tutorials/advanced/new-robot.html)
 
 `C++` or `YAML` description that defines:
 - how to find the robot's model (urdf, ...)
@@ -368,7 +384,7 @@ File | Description
 
 <!-- header: Control framework: mc_rtc - An FSM Controller is: -->
 
-# An [FSM Controllers](https://jrl.cnrs.fr/mc_rtc/tutorials/recipes/fsm-example.html) is
+## An [FSM Controllers](https://jrl.cnrs.fr/mc_rtc/tutorials/recipes/fsm-example.html) is
 ### A `yaml` configuration
 
 ```yaml
@@ -386,7 +402,7 @@ transitions:
 
 ---
 
-### `C++` states 
+### `C++` or `Python` states 
 
 ```cpp
 struct Door_Initial : public State
@@ -469,7 +485,7 @@ Door::OpenDoorFSM:
 ---
 
 <!-- header: Control framework: mc_rtc - Plugins -->
-## We love external tools
+## We love [Plugins](https://jrl.cnrs.fr/mc_rtc/tutorials/advanced/new-plugin.html)
 
 Inherit from `mc_control::GlobalPlugin` and implement:
 
@@ -485,8 +501,8 @@ Link against any external library and do what you need.
 ---
 
 <!-- header: Control framework: mc_rtc - State Observation -->
-## We love knowing where we are
-### State observation pipeline
+## We love [knowing where we are](https://jrl.cnrs.fr/mc_rtc/tutorials/recipes/observers.html)
+#### State observation pipeline
 - Simple observers: `Encoder`, `BodySensor`, etc
 - Composed and configured with a `yaml` configuration:
 
@@ -511,7 +527,7 @@ ObserverPipelines:
 ## COMANOID (2020)
 
 <center>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/fW7lFUToMjc?si=DjatLceG4nIIgb7Q&amp;controls=0&amp;start=98" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fW7lFUToMjc?si=DjatLceG4nIIgb7Q&amp;start=98" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </center>
 
 ---
@@ -567,18 +583,23 @@ To build a cmake project in CI:
 - Build from-source dependencies
   - Need to be manually specified
 - Build and test the cmake project itself
+- Install documentation
+
+> All custom steps that depend on the CI provider (gitlab, github actions, etc)
 
 ---
 
 <!-- header: Build systems - continuous integration -->
 ### Continous integration - debian/ubuntu packaging
 
+> Great for general public release, poor for developement
+
 To package a cmake project in CI:
 - Define `debian` package rules (or use `cpack`)
   - `debian/control`: define packages and their required dependencies
   - `debian/rules`: how to build the package
 - Set-up additional package repositories, e.g `ros`, ours
-- Then call debian packaging commands
+- Then call debian packaging commands (`pkg-buildpackage`)
 - Publish the package on a public package repository
   - We use [Cloudsmith](https://cloudsmith.com/): free for opensource
 
@@ -1110,14 +1131,15 @@ jobs:
 <!-- header: Build systems - build script -->
 ## Installing multiple projects - build script
 
+> CI setup cannot be used locally
+
 - `mc_rtc` itself has:
-  - a few system dependencies: `eigen`, `boost`, `fmt`, `spdlog`
+  - system dependencies: `eigen`, `boost`, `fmt`, `spdlog`
   - direct dependencies: `eigen-qld`, `sch-core`, `sva`, `rbdyn`, `tasks`, `mesh_sampling`, `ndcurves`, `mc_rtc_data`
-  - a few downstream projects: `mc_rtc_ros`, `mc-rtc-magnum`, robot modules, robot interfaces
+  - downstream projects: `mc_rtc_ros`, `mc-rtc-magnum`, robots 
 
 - Build managed by a `build_and_install.sh` script
-  - Sets up system dependencies (ubuntu only)
-  - Clones builds and installs projects in the right order (manually defined)
+  - Sets up dependencies (ubuntu only) / clone, build and install projects in the right order (manually defined)
 
 ---
 
@@ -1241,12 +1263,12 @@ AddProject(
 ### The good
 - Easy to understand, most people already know cmake
 - Can install APT, PIP dependencies, or any cmake project from source
-- Worked great to manage complexity for a few years
 
 ### The bad
 - Compilation heavy: most people don't release packages
 - Only supports Ubuntu
 - Hard to have a project depend on different versions of a common dependency
+- Duplication with other similar tools: [PID](https://pid.lirmm.net/pid-framework), [CPM](https://github.com/cpm-cmake/cpm.cmake), ...
 
 
 ---
@@ -1260,7 +1282,7 @@ AddProject(
 - Reproducible builds
 - Reproducible depelopper environment
 - Same environment in CI and locally
-- Custom dependency graph for different projects
+- Each project can have its own dependency graph
 - An always up-to-date binary cache
 
 ---
@@ -1268,7 +1290,7 @@ AddProject(
 ### Nix: principles
 
 - Domain specific language
-- A `derivation` defines a reproducible build process
+- A `derivation` defines a reproducible build process:
   - All inputs required to build (dependencies, tools, etc)
   - Defines what are the build outputs
   - Outputs are assigned a unique hash
@@ -1348,7 +1370,7 @@ Multiple ways of using an `overlay`, a popular one is nix flakes:
 
 - Developped by Guilhem Saurel @LAAS
 - Idea:
-  - One *official* central repository that defines how to build packages we want (derivations) (e.g [gepetto/nix](https://github.com/gepetto/nix), [mc-rtc/nixpkgs](https://github.com/mc-rtc/nixpkgs))
+  - One *official* central repository that defines how to build packages (*derivations*): e.g [gepetto/nix](https://github.com/gepetto/nix), [mc-rtc/nixpkgs](https://github.com/mc-rtc/nixpkgs)
     - CI builds, checks an publishes a binary cache
   - Each project defines a `flake.nix` using `flakboboros` to:
     - overrides the derivation with the local source tree
@@ -1380,7 +1402,7 @@ This project is a work-in-progress that depends on many other changes:
     flake-parts.follows = "mc-rtc-nix/flake-parts";
     systems.follows = "mc-rtc-nix/systems";
 
-    # overrides
+    # override inputs from PR branch
     mc-state-observation.url = "github:jrl-umi3218/mc_state_observation/pull/57/head";
     mc-state-observation.flake = false;
     dcm-vrptask.url = "github:Hugo-L3174/DCM_VRPTask/pull/1/head";
@@ -1409,6 +1431,11 @@ flakoboros = {
   };
 };
 
+```
+
+Update the inputs with
+```sh
+nix flake update
 ```
 
 ---
@@ -1548,7 +1575,7 @@ flakoboros = {
 #### What have we gained?
 
 - Central `mc-rtc/nixpkgs` repository knows how to build most packages
-  - Their dependency graph, how to build it, etc
+  - Their dependency graph, how to build it, CI populates cache
 - `PolytopeController`
   - `flake.nix` defines what changes are needed to build itself
   - Locks dependencies in a `flake.lock` file
